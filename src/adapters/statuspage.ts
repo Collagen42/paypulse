@@ -48,7 +48,7 @@ export async function fetchStatuspageStatus(provider: PSPProvider): Promise<Norm
 
   const data: StatuspageSummary = await res.json();
 
-  const components: NormalizedComponent[] = data.components
+  const components: NormalizedComponent[] = (data.components ?? [])
     .filter((c) => !c.group_id)
     .map((c) => ({
       id: c.id,
@@ -57,7 +57,7 @@ export async function fetchStatuspageStatus(provider: PSPProvider): Promise<Norm
       updatedAt: c.updated_at,
     }));
 
-  const activeIncidents: NormalizedIncident[] = data.incidents.map((i) => ({
+  const activeIncidents: NormalizedIncident[] = (data.incidents ?? []).map((i) => ({
     id: i.id,
     name: i.name,
     status: i.status as NormalizedIncident['status'],
@@ -71,7 +71,7 @@ export async function fetchStatuspageStatus(provider: PSPProvider): Promise<Norm
     })),
   }));
 
-  const upcomingMaintenances: NormalizedMaintenance[] = data.scheduled_maintenances.map((m) => ({
+  const upcomingMaintenances: NormalizedMaintenance[] = (data.scheduled_maintenances ?? []).map((m) => ({
     id: m.id,
     name: m.name,
     scheduledFor: m.scheduled_for,
