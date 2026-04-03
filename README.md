@@ -120,6 +120,12 @@ Hosted on [Cloudflare Pages](https://pages.cloudflare.com/) with automatic deplo
 
 Cloudflare Pages automatically detects the `functions/` directory and deploys the CORS proxy as a Pages Function.
 
+### Resource Usage & Rate Limits
+
+- **Polling is client-side only** — the 60-second refresh runs via `setInterval` in the browser. When no one has the tab open, zero requests are made. There are no background jobs or server-side cron tasks.
+- **Cloudflare free tier is more than enough** — the Pages Function (CORS proxy) only fires for PayPal and Adyen: 2 requests/minute per open tab. The free tier allows 100,000 function invocations/day.
+- **PSP APIs won't block you** — Statuspage.io's public Status API has no rate limit (confirmed in Atlassian docs). PayPal and Adyen requests go through the Cloudflare proxy, which caches responses for 60 seconds, so multiple concurrent users don't multiply upstream calls.
+
 ## Adding a New Provider
 
 1. Add an entry to `src/config/providers.ts` with the provider's status page URL and API type
