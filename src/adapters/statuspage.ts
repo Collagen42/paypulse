@@ -1,4 +1,5 @@
 import type { PSPProvider, NormalizedStatus, NormalizedComponent, NormalizedIncident, NormalizedMaintenance, OverallIndicator } from '../types';
+import { buildFetchUrl } from '../utils/fetchUrl';
 
 const INDICATOR_MAP: Record<string, OverallIndicator> = {
   none: 'operational',
@@ -41,7 +42,8 @@ interface StatuspageSummary {
 }
 
 export async function fetchStatuspageStatus(provider: PSPProvider): Promise<NormalizedStatus> {
-  const res = await fetch(`${provider.apiBaseUrl}/summary.json`);
+  const url = buildFetchUrl(`${provider.apiBaseUrl}/summary.json`, provider);
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
   const data: StatuspageSummary = await res.json();

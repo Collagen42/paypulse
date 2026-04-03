@@ -20,13 +20,14 @@ Payment Operations teams typically monitor 8–12 separate status pages to track
 | Klarna | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
 | Worldpay | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
 | Square | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| PayPal | Custom Node.js SPA | `/api/v1/components` + `/api/v1/events` | Proxied | Working |
 | Adyen | Custom Vue.js SPA | `/api/incident-messages/active` | Proxied | Working |
 
 ### Provider Notes
 
 - **Statuspage.io providers** use a standardized public JSON API with no authentication or rate limits.
+- **PayPal** uses a custom Node.js SPA with its own REST API (`/api/v1/`). Components and events are fetched separately. Includes Braintree, Venmo, Zettle, and Hyperwallet sub-products.
 - **Adyen** uses an incident-driven model — if no active incidents exist, all 6 components are operational. Severity levels (GREY/YELLOW/RED) are mapped to the normalized schema.
-- **PayPal** was researched but excluded from MVP — their status page is a custom SPA that redirects API requests (not standard Statuspage.io despite appearances). Planned for a future phase via scraping or custom adapter.
 
 ## Tech Stack
 
@@ -36,7 +37,7 @@ Payment Operations teams typically monitor 8–12 separate status pages to track
 | Language | TypeScript (strict) | Type safety for API response handling |
 | Styling | Tailwind CSS 4 | Utility-first, responsive, dark mode |
 | State | React hooks | No external state lib needed for this scope |
-| CORS Proxy | Vite dev proxy / Cloudflare Pages Functions | Adyen blocks cross-origin requests |
+| CORS Proxy | Vite dev proxy / Cloudflare Pages Functions | PayPal and Adyen block cross-origin requests |
 
 ## Architecture
 
@@ -46,8 +47,11 @@ Browser
  ├── Direct fetch ──→ Klarna API      (CORS ✓)
  ├── Direct fetch ──→ Worldpay API    (CORS ✓)
  ├── Direct fetch ──→ Square API      (CORS ✓)
- └── Vite proxy   ──→ Adyen API       (CORS ✗)
+ ├── CORS proxy   ──→ PayPal API      (CORS ✗)
+ └── CORS proxy   ──→ Adyen API       (CORS ✗)
 ```
+
+In development, Vite's built-in proxy handles CORS-blocked providers. In production, Cloudflare Pages Functions serve as the proxy.
 
 All API responses are normalized to a common schema (`NormalizedStatus`) via adapter functions. Each provider has its own independent polling cycle — one failure doesn't block others.
 
@@ -57,6 +61,7 @@ All API responses are normalized to a common schema (`NormalizedStatus`) via ada
 src/
 ├── adapters/          # One adapter per API type
 │   ├── statuspage.ts  # Handles all Statuspage.io providers
+│   ├── paypal.ts      # Custom PayPal adapter (components + events)
 │   ├── adyen.ts       # Custom Adyen incident-driven adapter
 │   └── index.ts       # Adapter factory/router
 ├── components/        # React UI components
@@ -110,10 +115,19 @@ npm run preview
 | Major Outage | Red | `#ef4444` |
 | Unknown / Error | Gray | `#6b7280` |
 
+## Deployment
+
+Hosted on Cloudflare Pages with Pages Functions providing the CORS proxy for PayPal and Adyen.
+
+```bash
+npm run build
+npm run deploy
+```
+
+Or connect the GitHub repo to Cloudflare Pages for automatic deploys on push.
+
 ## What's Next (Planned)
 
-- **PayPal integration** — Custom adapter for their non-standard status API
-- **Cloudflare Pages deployment** — With Pages Functions as the CORS proxy for production
 - **Dark/light mode toggle**
 - **Historical uptime tracking** — localStorage-based uptime percentages
 - **Filtering & search** — Filter by status or provider category

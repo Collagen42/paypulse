@@ -42,6 +42,19 @@ export const providers: PSPProvider[] = [
     region: 'US / Global',
   },
   {
+    id: 'paypal',
+    name: 'PayPal',
+    logo: '/logos/paypal.svg',
+    statusPageUrl: 'https://www.paypal-status.com',
+    apiType: 'custom',
+    apiBaseUrl: import.meta.env.DEV
+      ? '/proxy/paypal/api'
+      : 'https://www.paypal-status.com/api',
+    category: 'Wallet / PSP',
+    region: 'Global',
+    corsProxy: true,
+  },
+  {
     id: 'adyen',
     name: 'Adyen',
     logo: '/logos/adyen.svg',

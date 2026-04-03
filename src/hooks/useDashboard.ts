@@ -27,13 +27,15 @@ function useProviderStatusWrapper(provider: typeof providers[number]) {
 }
 
 export function useDashboard(): DashboardState {
+  // Hooks must be called unconditionally — one per provider slot
   const p0 = useProviderStatusWrapper(providers[0]);
   const p1 = useProviderStatusWrapper(providers[1]);
   const p2 = useProviderStatusWrapper(providers[2]);
   const p3 = useProviderStatusWrapper(providers[3]);
   const p4 = useProviderStatusWrapper(providers[4]);
+  const p5 = useProviderStatusWrapper(providers[5]);
 
-  const providerStates = useMemo(() => [p0, p1, p2, p3, p4], [p0, p1, p2, p3, p4]);
+  const providerStates = useMemo(() => [p0, p1, p2, p3, p4, p5], [p0, p1, p2, p3, p4, p5]);
 
   const allIncidents = useMemo(() => {
     const incidents: DashboardIncident[] = [];

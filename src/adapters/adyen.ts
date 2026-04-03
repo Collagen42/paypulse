@@ -1,4 +1,5 @@
 import type { PSPProvider, NormalizedStatus, NormalizedComponent, NormalizedIncident, OverallIndicator } from '../types';
+import { buildFetchUrl } from '../utils/fetchUrl';
 
 const ADYEN_COMPONENTS: Record<string, string> = {
   PLATFORM_AVAILABILITY: 'Payments',
@@ -61,7 +62,8 @@ function extractText(richText: ContentfulRichText): string {
 }
 
 export async function fetchAdyenStatus(provider: PSPProvider): Promise<NormalizedStatus> {
-  const res = await fetch(`${provider.apiBaseUrl}/incident-messages/active`);
+  const url = buildFetchUrl(`${provider.apiBaseUrl}/incident-messages/active`, provider);
+  const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
   const data: AdyenActiveResponse = await res.json();
