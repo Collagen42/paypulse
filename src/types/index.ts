@@ -52,6 +52,18 @@ export interface NormalizedMaintenance {
   status: string;
 }
 
+export interface HistoricalIncident {
+  id: string;
+  providerId: string;
+  providerName: string;
+  title: string;
+  impact: 'none' | 'minor' | 'major' | 'critical';
+  status: 'investigating' | 'identified' | 'monitoring' | 'resolved';
+  startedAt: string;
+  resolvedAt: string | null;
+  url?: string;
+}
+
 export type OverallIndicator = NormalizedStatus['overall']['indicator'];
 export type ComponentStatus = NormalizedComponent['status'];
 
