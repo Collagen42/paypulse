@@ -15,8 +15,8 @@ function App() {
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-8">
             <div>
-              <h1 className="text-xl font-bold tracking-tight">PSP Aggregator</h1>
-              <p className="text-xs text-gray-500">PSP Status Aggregator</p>
+              <h1 className="text-xl font-bold tracking-tight">PSP Monitor</h1>
+              <p className="text-xs text-gray-500">PSP Status Monitor</p>
             </div>
             <nav className="flex gap-1">
               <button
@@ -61,7 +61,7 @@ function App() {
 
       <footer className="border-t border-gray-800 px-6 py-4 mt-auto">
         <div className="max-w-6xl mx-auto text-center text-xs text-gray-600">
-          PSP Aggregator aggregates public status pages. Not affiliated with any listed provider.
+          PSP Monitor aggregates public status pages. Not affiliated with any listed provider.
         </div>
       </footer>
     </div>

@@ -1,4 +1,4 @@
-# PSP Aggregator — PSP Status Dashboard
+# PSP Monitor — PSP Status Dashboard
 
 **Live:** [paypulse-2ma.pages.dev](https://paypulse-2ma.pages.dev/)
 **Repo:** [github.com/DoeberlD/PSP-Aggregator](https://github.com/DoeberlD/PSP-Aggregator)
@@ -7,7 +7,7 @@ A real-time dashboard that aggregates the public status of major Payment Service
 
 ## What It Does
 
-Payment Operations teams typically monitor 8-12 separate status pages to track PSP health. PSP Aggregator consolidates them into one dashboard with:
+Payment Operations teams typically monitor 8-12 separate status pages to track PSP health. PSP Monitor consolidates them into one dashboard with:
 
 - **Provider status cards** — Overall status, component-level breakdown, active incidents per provider
 - **Unified incident feed** — All active incidents across all providers, sorted chronologically

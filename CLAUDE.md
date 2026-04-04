@@ -1,4 +1,4 @@
-# PSP Status Dashboard (PSP Aggregator)
+# PSP Status Dashboard (PSP Monitor)
 
 ## What This Is
 A React dashboard that aggregates the public status of multiple Payment Service Providers into a single view.
