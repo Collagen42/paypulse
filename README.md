@@ -1,7 +1,7 @@
 # PSP Monitor — PSP Status Dashboard
 
 **Live:** [paypulse-2ma.pages.dev](https://paypulse-2ma.pages.dev/)
-**Repo:** [github.com/DoeberlD/PSP-Aggregator](https://github.com/DoeberlD/PSP-Aggregator)
+**Repo:** [github.com/DoeberlD/PSP-Monitor](https://github.com/DoeberlD/PSP-Monitor)
 
 A real-time dashboard that aggregates the public status of major Payment Service Providers (PSPs) into a single view. Built as a portfolio project demonstrating payments domain knowledge.
 
