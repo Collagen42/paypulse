@@ -144,6 +144,16 @@ export const providers: PSPProvider[] = [
     corsProxy: true,
   },
   {
+    id: 'worldline',
+    name: 'Worldline',
+    logo: '/logos/worldline.svg',
+    statusPageUrl: 'https://wlop.status.worldline-solutions.com',
+    apiType: 'statuspage_io',
+    apiBaseUrl: 'https://wlop.status.worldline-solutions.com/api/v2',
+    category: 'Payment Gateway',
+    region: 'EU / Global',
+  },
+  {
     id: 'worldpay-gateway',
     name: 'Worldpay Gateway',
     logo: '/logos/worldpay.svg',
