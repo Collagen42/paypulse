@@ -5,6 +5,7 @@ const ALLOWED_HOSTS = [
   'status.klarna.com',
   'worldpayforplatforms.statuspage.io',
   'issquareup.com',
+  'www.apple.com',
 ];
 
 export const onRequest: PagesFunction = async (context) => {

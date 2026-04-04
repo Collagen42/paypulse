@@ -127,4 +127,17 @@ export const providers: PSPProvider[] = [
     category: 'Wallet / PSP',
     region: 'Global',
   },
+  {
+    id: 'applepay',
+    name: 'Apple Pay',
+    logo: '/logos/applepay.svg',
+    statusPageUrl: 'https://www.apple.com/support/systemstatus/',
+    apiType: 'custom',
+    apiBaseUrl: import.meta.env.DEV
+      ? '/proxy/apple'
+      : 'https://www.apple.com',
+    category: 'Wallet / PSP',
+    region: 'Global',
+    corsProxy: true,
+  },
 ];

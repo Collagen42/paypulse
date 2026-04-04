@@ -16,6 +16,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/proxy\/adyen/, ''),
       },
+      '/proxy/apple': {
+        target: 'https://www.apple.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/proxy\/apple/, ''),
+      },
     },
   },
 })
