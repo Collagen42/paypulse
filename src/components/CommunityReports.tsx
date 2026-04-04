@@ -100,7 +100,7 @@ function LinkCardComponent({ card }: { card: LinkCard }) {
 
 export function CommunityReports() {
   return (
-    <main className="max-w-6xl mx-auto px-6 py-6 space-y-8 flex-1">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-8 flex-1">
       {/* Downdetector section */}
       <section>
         <div className="flex items-center gap-3 mb-4">
