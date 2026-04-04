@@ -36,7 +36,7 @@ export function ProviderCard({ state, providerId }: ProviderCardProps) {
 
   return (
     <div
-      className={`bg-gray-800 rounded-xl p-5 border border-gray-700 cursor-pointer transition-all hover:border-gray-500 ${expanded ? 'ring-1 ring-gray-600' : ''}`}
+      className={`bg-gray-800 rounded-xl p-5 border border-gray-700 cursor-pointer transition-all hover:border-gray-500 min-w-0 overflow-hidden ${expanded ? 'ring-1 ring-gray-600' : ''}`}
       onClick={() => setExpanded(!expanded)}
     >
       <div className="flex items-center justify-between mb-2">

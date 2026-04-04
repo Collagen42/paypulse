@@ -13,7 +13,7 @@ export function IncidentItem({ incident }: IncidentItemProps) {
 
   return (
     <div
-      className="bg-gray-800 rounded-lg p-4 border border-gray-700 cursor-pointer hover:border-gray-600 transition-colors"
+      className="bg-gray-800 rounded-lg p-4 border border-gray-700 cursor-pointer hover:border-gray-600 transition-colors min-w-0 overflow-hidden"
       onClick={() => setExpanded(!expanded)}
     >
       <div className="flex items-start justify-between gap-3">

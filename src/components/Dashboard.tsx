@@ -7,7 +7,7 @@ export function Dashboard() {
   const { providerStates, allIncidents, summary } = useDashboard();
 
   return (
-    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6 flex-1">
+    <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 space-y-6 flex-1 overflow-hidden">
       <SummaryBar summary={summary} />
 
       <section>

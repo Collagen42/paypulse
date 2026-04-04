@@ -37,7 +37,7 @@ export function SummaryBar({ summary }: SummaryBarProps) {
   }
 
   return (
-    <div className={`rounded-lg border px-4 py-2.5 ${bgColor}`}>
+    <div className={`rounded-lg border px-4 py-2.5 overflow-hidden ${bgColor}`}>
       <p className={`text-sm font-medium ${textColor}`}>{message}</p>
     </div>
   );
