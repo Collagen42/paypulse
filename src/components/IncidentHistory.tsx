@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useIncidentHistory } from '../hooks/useIncidentHistory';
 import { CalendarView } from './CalendarView';
 import { getImpactBgClass, getImpactColor } from '../utils/statusColors';
@@ -29,6 +29,13 @@ function formatDuration(startedAt: string, resolvedAt: string | null): string {
   return remMins > 0 ? `${hours}h ${remMins}m` : `${hours}h`;
 }
 
+function formatMinutes(totalMins: number): string {
+  if (totalMins < 60) return `${totalMins}m`;
+  const hours = Math.floor(totalMins / 60);
+  const mins = totalMins % 60;
+  return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+}
+
 export function IncidentHistory() {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
@@ -57,6 +64,31 @@ export function IncidentHistory() {
     setYear(newYear);
   }
 
+  // Calculate severe incident stats for the current month
+  const monthStats = useMemo(() => {
+    const monthStart = new Date(year, month, 1);
+    const monthEnd = new Date(year, month + 1, 0, 23, 59, 59, 999);
+
+    const severeIncidents = incidents.filter((i) => {
+      if (i.impact !== 'major' && i.impact !== 'critical') return false;
+      const start = new Date(i.startedAt);
+      const end = i.resolvedAt ? new Date(i.resolvedAt) : new Date();
+      return start <= monthEnd && end >= monthStart;
+    });
+
+    let totalMinutes = 0;
+    for (const i of severeIncidents) {
+      const start = new Date(Math.max(new Date(i.startedAt).getTime(), monthStart.getTime()));
+      const end = new Date(Math.min(
+        (i.resolvedAt ? new Date(i.resolvedAt) : new Date()).getTime(),
+        monthEnd.getTime(),
+      ));
+      totalMinutes += Math.max(0, Math.round((end.getTime() - start.getTime()) / 60000));
+    }
+
+    return { count: severeIncidents.length, totalMinutes };
+  }, [incidents, year, month]);
+
   // Get incidents for the selected date
   const selectedIncidents: HistoricalIncident[] = selectedDate
     ? incidents.filter((i) => {
@@ -71,14 +103,26 @@ export function IncidentHistory() {
   return (
     <main className="flex-1 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto py-6 space-y-4">
-      <div className="bg-yellow-900/20 border border-yellow-800/50 rounded-lg px-4 py-2 text-sm text-yellow-200">
-        Historical data is limited for: Adyen, Mastercard, Apple Pay, PAYONE, EPS. Only Live Status incidents are shown.
-      </div>
 
       {error && (
         <div className="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-2 text-sm text-red-200">
           {error}
         </div>
+      )}
+
+      {/* Monthly severe incident summary */}
+      {!loading && (
+        monthStats.count > 0 ? (
+          <div className="bg-red-900/20 border border-red-800/50 rounded-lg px-4 py-2.5 text-sm text-red-200 flex items-center gap-2">
+            <span className="bg-red-500 w-2 h-2 rounded-full shrink-0" />
+            {monthStats.count} severe incident{monthStats.count > 1 ? 's' : ''} — {formatMinutes(monthStats.totalMinutes)} total downtime in {MONTH_NAMES[month]} {year}
+          </div>
+        ) : (
+          <div className="bg-green-900/20 border border-green-800/50 rounded-lg px-4 py-2.5 text-sm text-green-200 flex items-center gap-2">
+            <span className="bg-green-500 w-2 h-2 rounded-full shrink-0" />
+            No severe incidents in {MONTH_NAMES[month]} {year}
+          </div>
+        )
       )}
 
       {/* Month navigator */}
@@ -114,6 +158,11 @@ export function IncidentHistory() {
           onDayClick={setSelectedDate}
         />
       )}
+
+      {/* Limited data notice */}
+      <div className="bg-yellow-900/20 border border-yellow-800/50 rounded-lg px-4 py-2 text-sm text-yellow-200">
+        Historical data is limited for: Adyen, Mastercard, Apple Pay, PAYONE, EPS. Only Live Status incidents are shown.
+      </div>
 
       {/* Day detail modal */}
       {selectedDate && (
