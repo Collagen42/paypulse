@@ -17,7 +17,7 @@ function App() {
         <div className="max-w-6xl mx-auto">
           {/* Top row: title + refresh */}
           <div className="flex items-center justify-between mb-2 sm:mb-0">
-            <h1 className="text-lg sm:text-xl font-bold tracking-tight">PayUptime</h1>
+            <h1 className="text-lg sm:text-xl font-bold tracking-tight cursor-pointer hover:text-blue-400 transition-colors" onClick={() => setActiveTab('dashboard')}>PayUptime</h1>
             <div className="flex items-center gap-3">
               {activeTab === 'dashboard' && <RefreshIndicator />}
               <p className="text-xs text-gray-500 hidden sm:block">Next Update</p>
