@@ -33,7 +33,7 @@ export function InfoPage() {
           <div className="space-y-3">
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
               <h3 className="text-sm font-medium text-gray-200 mb-1">Live Status</h3>
-              <p className="text-xs text-gray-400">Real-time status cards for all providers with component-level breakdown, active incident feed, and a summary bar. Auto-refreshes every 3 minutes.</p>
+              <p className="text-xs text-gray-400">Real-time status cards for all 16 providers with component-level breakdown, active incident feed, and a summary bar. Auto-refreshes every 3 minutes.</p>
             </div>
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
               <h3 className="text-sm font-medium text-gray-200 mb-1">Incident History</h3>
@@ -42,6 +42,10 @@ export function InfoPage() {
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
               <h3 className="text-sm font-medium text-gray-200 mb-1">Community Reports</h3>
               <p className="text-xs text-gray-400">Quick links to Downdetector outage reports, app store reviews, forums, and other community feedback sources for real-world user sentiment.</p>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+              <h3 className="text-sm font-medium text-gray-200 mb-1">Austria PSP Comparison</h3>
+              <p className="text-xs text-gray-400">Sortable, filterable comparison table of 23 payment providers relevant to the Austrian market. Includes ranking with adjustable weight sliders, EPS/AT method badges, GDPR indicators, and PDF export for offline review.</p>
             </div>
           </div>
         </section>
@@ -67,6 +71,10 @@ export function InfoPage() {
             <li className="flex items-start gap-2">
               <span className="text-green-500 mt-0.5">&#x2022;</span>
               <span><strong className="text-gray-300">Developers</strong> — see which payment APIs are experiencing issues before debugging your integration</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-green-500 mt-0.5">&#x2022;</span>
+              <span><strong className="text-gray-300">Decision makers</strong> — compare PSP options for the Austrian market with the interactive comparison table</span>
             </li>
           </ul>
         </section>
