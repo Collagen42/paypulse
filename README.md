@@ -13,46 +13,54 @@ Payment Operations teams typically monitor 8-12 separate status pages to track P
 - **Provider status cards** — Overall status, component-level breakdown, active incidents per provider
 - **Unified incident feed** — All active incidents across all providers, sorted chronologically
 - **Summary bar** — At-a-glance "X of Y providers operational" indicator
-- **Auto-refresh** — Polls every 60 seconds with animated countdown indicator
+- **Auto-refresh** — Polls every 180 seconds (3 minutes) with animated countdown indicator
 - **Responsive layout** — 3 columns desktop, 2 tablet, 1 mobile
 
 ### Incident History
 - **Monthly calendar view** — Navigate between months to see historical incidents
+- **Severe incident summary** — Aggregated downtime minutes for major/critical incidents per month
 - **Day cells** — Show incident severity dots, provider name, title, and time range
 - **Detail modal** — Click any day to see full incident details in a popup
 - **Multi-day incidents** — Incidents spanning multiple days appear in all overlapping cells
-- **7 providers** — Stripe, Klarna, Worldpay, CyberSource, PayPal, Adyen, Unzer, Google Pay
+- **9 providers** — Stripe, Klarna, Worldpay, CyberSource, PayPal, Adyen, Unzer, Google Pay, Worldline
 
 ### Community Reports
 - **Downdetector links** — Direct links to Austrian Downdetector (allestörungen.at) for Visa, PayPal, Stripe, Klarna, Mastercard
 - **Feedback sources** — Drei app store reviews (Kundenzone + Up von Drei), Trustpilot, CHIP, LTE Forum, Firmenhandy.at, Reddit
 
-## Providers Integrated (12)
+## Providers Integrated (16)
 
 | Provider | Platform | API Type | CORS | Status |
 |----------|----------|----------|------|--------|
-| Stripe | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
-| Klarna | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
-| Worldpay | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
-| Square | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
 | Visa Acceptance Solutions | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
-| CyberSource (Visa) | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
-| Worldpay Gateway | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
-| Unzer | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| Mastercard | Custom | `/apistatus/service-results` | Proxied | Working |
 | PayPal | Custom Node.js SPA | `/api/v1/components` + `/api/v1/events` | Proxied | Working |
-| Adyen | Custom Vue.js SPA | `/api/incident-messages/active` | Proxied | Working |
-| PAYONE | Storyblok CMS | Storyblok CDN API | Direct | Working |
+| Klarna | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
 | Google Pay | Custom Google | `/status/products.json` + `/status/incidents.json` | Direct | Working |
+| Apple Pay | Apple System Status | `/support/systemstatus/data/system_status_en_US.js` | Proxied | Working |
+| Unzer | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| EPS | Custom HTML | HTML parsing from eservice.psa.at | Proxied | Working |
+| PAYONE | Storyblok CMS | Storyblok CDN API | Direct | Working |
+| Worldline | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| Worldpay | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| Stripe | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| Square | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| CyberSource (Visa) | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
+| Adyen | Custom Vue.js SPA | `/api/incident-messages/active` | Proxied | Working |
+| Worldpay Gateway | Statuspage.io | `/api/v2/summary.json` | Direct | Working |
 
 ### Provider Notes
 
-- **Statuspage.io providers** (Stripe, Klarna, Worldpay, Square, Visa Acceptance Solutions, CyberSource, Worldpay Gateway, Unzer) use a standardized public JSON API with no authentication or rate limits. The adapter handles variations like Square's minimal response (no components/incidents arrays).
+- **Statuspage.io providers** (Stripe, Klarna, Worldpay, Square, Visa Acceptance Solutions, CyberSource, Worldpay Gateway, Unzer, Worldline) use a standardized public JSON API with no authentication or rate limits. The adapter handles variations like Square's minimal response (no components/incidents arrays).
 - **Visa Acceptance Solutions** and **CyberSource** provide indirect visibility into Visa's card network ecosystem. While Visa does not expose VisaNet status publicly, issues with card processing typically surface through these subsidiary status pages as well as through Stripe's "Acquirers and payment methods" and Adyen's "Payment methods and issuers" components.
 - **Worldpay Gateway** (`status.worldpay.com`) is the main Worldpay status page covering Authorization & Payments, Acquiring Services, Funding & Payouts, and Portals & Reporting — separate from the Worldpay for Platforms status page.
+- **Mastercard** uses a developer API at `developer.mastercard.com/apistatus` with service-level pass/fail results. The adapter filters to 10 key payment services (Gateway regions, Click To Pay, MDES, Processing, Mastercom).
 - **PayPal** uses a custom Node.js SPA with its own REST API (`/api/v1/`). Components and events are fetched separately. Includes Braintree, Venmo, Zettle, and Hyperwallet sub-products. Discovered by reverse-engineering the SPA's bundle.js to find internal API endpoints.
 - **Adyen** uses an incident-driven model — if no active incidents exist, all 6 components are operational. Severity levels (GREY/YELLOW/RED) are mapped to the normalized schema. Backend is Contentful CMS; rich text descriptions are extracted to plain text.
+- **Apple Pay** is extracted from Apple's general system status page, filtering to payment-related services (Apple Pay, Wallet, Apple Card, Apple Cash).
 - **PAYONE** uses Storyblok CMS with a public CDN API token. The adapter fetches the incident-list component from the Austrian status page and maps icon colors (green/yellow/red) to normalized status levels.
 - **Google Pay** has a custom status dashboard with a proper JSON API (`products.json` + `incidents.json`). Covers 6 API components (Android/Web CreateButton, IsReadyToPay, LoadPaymentData).
+- **EPS** (Austrian online banking payment) has no JSON API. The adapter fetches HTML from the PSA eService status page and parses it using DOMParser to extract ~24 Austrian bank statuses.
 
 ## Tech Stack
 
@@ -63,7 +71,7 @@ Payment Operations teams typically monitor 8-12 separate status pages to track P
 | Styling | Tailwind CSS 4 | Utility-first, responsive, dark mode |
 | State | React hooks | No external state lib needed for this scope |
 | Hosting | Cloudflare Pages | Free tier, auto-deploys from GitHub |
-| CORS Proxy | Cloudflare Pages Functions | Proxies PayPal and Adyen (which block cross-origin requests) |
+| CORS Proxy | Cloudflare Pages Functions | Proxies PayPal, Adyen, Apple Pay, Mastercard, EPS |
 | Dev Proxy | Vite dev server proxy | Same CORS bypass locally without deploying |
 
 ## Architecture
@@ -78,10 +86,14 @@ Browser (Cloudflare Pages)
  ├── Direct fetch ──→ CyberSource API         (CORS ✓)
  ├── Direct fetch ──→ Worldpay Gateway API    (CORS ✓)
  ├── Direct fetch ──→ Unzer API               (CORS ✓)
+ ├── Direct fetch ──→ Worldline API           (CORS ✓)
  ├── Direct fetch ──→ PAYONE Storyblok API    (CORS ✓)
  ├── Direct fetch ──→ Google Pay API          (CORS ✓)
  ├── Pages Function ──→ PayPal API            (CORS ✗)
- └── Pages Function ──→ Adyen API             (CORS ✗)
+ ├── Pages Function ──→ Adyen API             (CORS ✗)
+ ├── Pages Function ──→ Apple Pay API         (CORS ✗)
+ ├── Pages Function ──→ Mastercard API        (CORS ✗)
+ └── Pages Function ──→ EPS (HTML parse)      (CORS ✗)
 ```
 
 - In **development**, Vite's built-in proxy handles CORS-blocked providers
@@ -95,11 +107,14 @@ Browser (Cloudflare Pages)
 ```
 src/
 ├── adapters/              # One adapter per API type
-│   ├── statuspage.ts      # Handles all Statuspage.io providers (8)
+│   ├── statuspage.ts      # Handles all Statuspage.io providers (9)
 │   ├── paypal.ts          # Custom PayPal adapter (components + events)
 │   ├── adyen.ts           # Custom Adyen incident-driven adapter
 │   ├── payone.ts          # Custom PAYONE Storyblok CMS adapter
 │   ├── googlepay.ts       # Custom Google Pay JSON API adapter
+│   ├── applepay.ts        # Custom Apple Pay system status adapter
+│   ├── mastercard.ts      # Custom Mastercard API status adapter
+│   ├── eps.ts             # Custom EPS HTML parsing adapter
 │   ├── index.ts           # Adapter factory/router
 │   └── history/           # Historical incident adapters
 │       ├── statuspageHistory.ts  # Statuspage.io incidents.json
@@ -109,7 +124,7 @@ src/
 │       └── index.ts              # History adapter dispatcher
 ├── components/            # React UI components
 │   ├── Dashboard.tsx      # Live Status tab (grid, incident feed)
-│   ├── IncidentHistory.tsx # History tab (month nav, calendar)
+│   ├── IncidentHistory.tsx # History tab (month nav, calendar, summary)
 │   ├── CommunityReports.tsx # Community tab (link cards)
 │   ├── CalendarView.tsx   # Monthly calendar grid
 │   ├── CalendarDay.tsx    # Day cell with incident indicators
@@ -123,7 +138,7 @@ src/
 ├── config/
 │   └── providers.ts       # Provider definitions (add new providers here)
 ├── hooks/
-│   ├── useProviderStatus.ts  # Single provider polling hook (60s interval)
+│   ├── useProviderStatus.ts  # Single provider polling hook (180s interval)
 │   ├── useDashboard.ts      # Orchestrates all providers, aggregates incidents
 │   └── useIncidentHistory.ts # Fetches + caches historical incidents
 ├── types/
@@ -144,7 +159,7 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173 to see the dashboard with live data from all 12 providers.
+Open http://localhost:5173 to see the dashboard with live data from all 16 providers.
 
 ### Build for Production
 
@@ -163,10 +178,10 @@ Cloudflare Pages automatically detects the `functions/` directory and deploys th
 
 ### Resource Usage & Rate Limits
 
-- **Polling is client-side only** — the 60-second refresh runs via `setInterval` in the browser. When no one has the tab open, zero requests are made. There are no background jobs or server-side cron tasks.
+- **Polling is client-side only** — the 180-second refresh runs via `setInterval` in the browser. When no one has the tab open, zero requests are made. There are no background jobs or server-side cron tasks.
 - **Incident History fetches once** — historical data is fetched on first load and cached in memory. No polling, no repeated API calls. Switching tabs reuses the cache.
-- **Cloudflare free tier is more than enough** — the Pages Function (CORS proxy) only fires for PayPal and Adyen: 2 requests/minute per open tab. The free tier allows 100,000 function invocations/day.
-- **PSP APIs won't block you** — Statuspage.io's public Status API has no rate limit (confirmed in Atlassian docs). PayPal and Adyen requests go through the Cloudflare proxy, which caches responses for 60 seconds, so multiple concurrent users don't multiply upstream calls. Google Pay's JSON API is public with CORS `*`.
+- **Cloudflare free tier is more than enough** — the Pages Function (CORS proxy) fires for PayPal, Adyen, Apple Pay, Mastercard, and EPS: 5 requests per poll cycle per open tab. The free tier allows 100,000 function invocations/day.
+- **PSP APIs won't block you** — Statuspage.io's public Status API has no rate limit (confirmed in Atlassian docs). Proxied providers go through the Cloudflare proxy, which caches responses for 60 seconds, so multiple concurrent users don't multiply upstream calls.
 
 ## Adding a New Provider
 
