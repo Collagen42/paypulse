@@ -1,13 +1,13 @@
-# PSP Monitor — PSP Status Dashboard
+# PayUptime — PSP Status Dashboard
 
-**Live:** [paypulse-2ma.pages.dev](https://paypulse-2ma.pages.dev/)
+**Live:** [payuptime.com](https://payuptime.com)
 **Repo:** [github.com/DoeberlD/PSP-Monitor](https://github.com/DoeberlD/PSP-Monitor)
 
 A real-time dashboard that aggregates the public status of major Payment Service Providers (PSPs) into a single view. Built as a portfolio project demonstrating payments domain knowledge.
 
 ## What It Does
 
-Payment Operations teams typically monitor 8-12 separate status pages to track PSP health. PSP Monitor consolidates them into one dashboard with three tabs:
+Payment Operations teams typically monitor 8-12 separate status pages to track PSP health. PayUptime consolidates them into one dashboard with three tabs:
 
 ### Live Status
 - **Provider status cards** — Overall status, component-level breakdown, active incidents per provider
