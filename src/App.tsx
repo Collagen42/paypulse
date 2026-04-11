@@ -21,7 +21,7 @@ function App() {
             <h1 className="text-lg sm:text-xl font-bold tracking-tight cursor-pointer hover:text-blue-400 transition-colors" onClick={() => setActiveTab('dashboard')}>PayUptime</h1>
             <div className="flex items-center gap-3">
               {activeTab === 'dashboard' && <RefreshIndicator />}
-              <p className="text-xs text-gray-500 hidden sm:block">Next Update</p>
+              {activeTab === 'dashboard' && <p className="text-xs text-gray-500 hidden sm:block">Next Update</p>}
             </div>
           </div>
           {/* Nav row */}
@@ -47,16 +47,6 @@ function App() {
               History
             </button>
             <button
-              onClick={() => setActiveTab('compare')}
-              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-md transition-colors whitespace-nowrap ${
-                activeTab === 'compare'
-                  ? 'bg-gray-800 text-white'
-                  : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'
-              }`}
-            >
-              PSP Ranking
-            </button>
-            <button
               onClick={() => setActiveTab('apichanges')}
               className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-md transition-colors whitespace-nowrap ${
                 activeTab === 'apichanges'
@@ -65,6 +55,16 @@ function App() {
               }`}
             >
               API Changes
+            </button>
+            <button
+              onClick={() => setActiveTab('compare')}
+              className={`px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs sm:text-sm rounded-md transition-colors whitespace-nowrap ${
+                activeTab === 'compare'
+                  ? 'bg-gray-800 text-white'
+                  : 'text-gray-400 hover:text-gray-200 hover:bg-gray-800/50'
+              }`}
+            >
+              PSP Ranking
             </button>
             <button
               onClick={() => setActiveTab('community')}
