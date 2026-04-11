@@ -40,12 +40,16 @@ export function InfoPage() {
               <p className="text-xs text-gray-400">Monthly calendar view showing historical incidents across providers. Click any day to see incident details including title, duration, and severity. Includes aggregated downtime statistics per month.</p>
             </div>
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-              <h3 className="text-sm font-medium text-gray-200 mb-1">Community Reports</h3>
-              <p className="text-xs text-gray-400">Quick links to Downdetector outage reports, app store reviews, forums, and other community feedback sources for real-world user sentiment.</p>
+              <h3 className="text-sm font-medium text-gray-200 mb-1">API Changes</h3>
+              <p className="text-xs text-gray-400">Quick-access directory linking to each provider's official API changelog and release notes. Useful for diagnosing if a recent API upgrade caused an integration issue.</p>
             </div>
             <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
-              <h3 className="text-sm font-medium text-gray-200 mb-1">Austria PSP Comparison</h3>
+              <h3 className="text-sm font-medium text-gray-200 mb-1">PSP Ranking</h3>
               <p className="text-xs text-gray-400">Sortable, filterable comparison table of 23 payment providers relevant to the Austrian market. Includes ranking with adjustable weight sliders, EPS/AT method badges, GDPR indicators, and PDF export for offline review.</p>
+            </div>
+            <div className="bg-gray-800 border border-gray-700 rounded-lg p-4">
+              <h3 className="text-sm font-medium text-gray-200 mb-1">Community</h3>
+              <p className="text-xs text-gray-400">Quick links to Downdetector outage reports, app store reviews, forums, and other community feedback sources for real-world user sentiment.</p>
             </div>
           </div>
         </section>

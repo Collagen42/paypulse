@@ -7,7 +7,7 @@ A real-time dashboard that aggregates the public status of major Payment Service
 
 ## What It Does
 
-Payment Operations teams typically monitor 8-12 separate status pages to track PSP health. PayUptime consolidates them into one dashboard with five tabs:
+Payment Operations teams typically monitor 8-12 separate status pages to track PSP health. PayUptime consolidates them into one dashboard with seven tabs:
 
 ### Live Status
 - **Provider status cards** — Overall status, component-level breakdown, active incidents per provider
@@ -24,11 +24,12 @@ Payment Operations teams typically monitor 8-12 separate status pages to track P
 - **Multi-day incidents** — Incidents spanning multiple days appear in all overlapping cells
 - **9 providers** — Stripe, Klarna, Worldpay, CyberSource, PayPal, Adyen, Unzer, Google Pay, Worldline
 
-### Community Reports
-- **Downdetector links** — Direct links to Austrian Downdetector (allestörungen.at) for Visa, PayPal, Stripe, Klarna, Mastercard
-- **Feedback sources** — Drei app store reviews (Kundenzone + Up von Drei), Trustpilot, CHIP, LTE Forum, Firmenhandy.at, Reddit
+### API Changes
+- **Changelog directory** — 14 link cards to each provider's official API changelog and release notes
+- **Popup windows** — Links open in centered popup windows for quick reference without leaving the dashboard
+- **Use case** — Check if a recent API upgrade may have caused an integration issue
 
-### Compare (Austria PSP Comparison)
+### PSP Ranking (Austria PSP Comparison)
 - **23 providers** — across Direct PSPs, Local AT Specialists, Commercial Orchestrators, and Open-Source Orchestrators
 - **Sortable table** — sort by name, methods, fees, support score, or computed overall score
 - **Filters** — category dropdown, EPS support toggle, open source toggle, free text search
@@ -36,6 +37,10 @@ Payment Operations teams typically monitor 8-12 separate status pages to track P
 - **Ranking panel** — top 10 with adjustable weight sliders (AT methods, fees, tech, migration, GDPR, uptime, support, scale)
 - **PDF export** — generate a print-friendly comparison report
 - **Source tooltips** — hover on fees, support, migration notes to see data source
+
+### Community
+- **Downdetector links** — Direct links to Austrian Downdetector (allestörungen.at) for Visa, PayPal, Stripe, Klarna, Mastercard
+- **Feedback sources** — Drei app store reviews (Kundenzone + Up von Drei), Trustpilot, CHIP, LTE Forum, Firmenhandy.at, Reddit
 
 ### Info
 - Product explainer — what PayUptime is, what it monitors, features, how it works, target audience
@@ -137,8 +142,9 @@ src/
 ├── components/            # React UI components
 │   ├── Dashboard.tsx      # Live Status tab (grid, incident feed)
 │   ├── IncidentHistory.tsx # History tab (month nav, calendar, summary)
+│   ├── ApiChanges.tsx     # API Changes tab (changelog link cards)
+│   ├── PSPComparison.tsx  # PSP Ranking tab (sortable table, ranking, PDF export)
 │   ├── CommunityReports.tsx # Community tab (link cards)
-│   ├── PSPComparison.tsx  # Compare tab (sortable table, ranking, PDF export)
 │   ├── InfoPage.tsx       # Info tab (product explainer)
 │   ├── CalendarView.tsx   # Monthly calendar grid
 │   ├── CalendarDay.tsx    # Day cell with incident indicators
